@@ -7,7 +7,7 @@ pkgVer <- function(pkg) {
 c(
 
     bibentry(bibtype="manual",
-        title = "",
+        title = "Species-Variable Feature Selection using SpecVGs",
         author = personList(
             as.person("MicTott")
         ),
@@ -17,7 +17,7 @@ c(
         doi = '10.18129/B9.bioc.SpecVGs'
     ),
     bibentry(bibtype="article",
-        title = "",
+        title = "Species-Variable Feature Selection using SpecVGs",
         author = personList(
             as.person("MicTott")
         ),
