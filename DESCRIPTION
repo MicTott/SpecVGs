@@ -1,14 +1,27 @@
 Package: SpecVGs
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Species-Variable Gene detection for single nucleus and spatially-resolved 
+    transcriptomic data.
+Version: 0.99.0
+Date: 2024-01-18
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Michael", "Totty", , "mictott@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-9292-8556"))
+Description: R package for improving cross-species integration of snRNA-sequencing data by 
+        detecting and ignoring species-variable genes (SVGs) in favor of
+        tissue-variable genes (TVGs).
+License: Artistic-2.0
+URL: https://github.com/MicTott/SpecVGs
+BugReports: https://support.bioconductor.org/tag/SpecVGs
+biocViews: Software
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-URL: https://github.com/MicTott/SpecVGs
-BugReports: https://github.com/MicTott/SpecVGs/issues
+Suggests: 
+    BiocStyle,
+    knitr,
+    RefManageR,
+    rmarkdown,
+    sessioninfo,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
