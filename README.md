@@ -81,7 +81,7 @@ Please run this yourself to check for any updates on how to cite
 **SpecVGs**.
 
 ``` r
-#print(citation('SpecVGs'), bibtex = TRUE)
+# print(citation('SpecVGs'), bibtex = TRUE)
 ```
 
 Please note that the `SpecVGs` was only made possible thanks to many
