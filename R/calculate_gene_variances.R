@@ -17,53 +17,55 @@
 #' result <- calculate_gene_variances(gene_names, data_frame)
 #'
 #' @export
-calculate_gene_variances <- function(gene_names, df, covariates = c("species", "celltype"), verbose = FALSE) {
-    # Create empty vectors to store sum_sqs
-    resid_variances <- vector("numeric", length(gene_names))
-    X1_variances <- vector("numeric", length(gene_names))
-    X2_variances <- vector("numeric", length(gene_names))
+calculate_gene_variances <- function(gene_names, df, covariates=c("species","celltype"), verbose = TRUE) {
 
-    # Create a progress bar if verbose is TRUE
+  # Create empty vectors to store sum_sqs
+  resid_variances <- vector("numeric", length(gene_names))
+  X1_variances <- vector("numeric", length(gene_names))
+  X2_variances <- vector("numeric", length(gene_names))
+
+  # Initialize progress bar if verbose is TRUE
+  if (verbose) {
+    pb <- txtProgressBar(min = 0, max = length(gene_names), style = 3)
+  }
+
+  # Loop through genes and fit linear models
+  for (i in seq_along(gene_names)) {
+    gene <- gene_names[i]
+    formula <- as.formula(paste(gene, '~', covariates[1], '+', covariates[2]))
+    model <- lm(formula, data = df)
+
+    # Extract ANOVA table
+    anova_table <- anova(model)
+
+    # Extract relevant information
+    sum_sq <- anova_table$`Sum Sq`
+
+    # Store sum_sqs for each gene
+    resid_variances[i] <- sum_sq[3]
+    X2_variances[i] <- sum_sq[2]
+    X1_variances[i] <- sum_sq[1]
+
+    # Update progress bar if verbose is TRUE
     if (verbose) {
-        pb <- txtProgressBar(min = 0, max = length(gene_names), style = 3)
+      setTxtProgressBar(pb, i)
     }
+  }
 
-    # Loop through genes and fit linear models
-    for (i in seq_along(gene_names)) {
-        gene <- gene_names[i]
-        formula <- as.formula(paste(gene, "~", covariates[1], "+", covariates[2]))
-        model <- lm(formula, data = df)
+  # Close progress bar if verbose is TRUE
+  if (verbose) {
+    close(pb)
+  }
 
-        # Extract ANOVA table
-        anova_table <- anova(model)
+  # Create a data frame with sum_sqs
+  sum_sqs_df <- data.frame(
+    gene = gene_names,
+    resid = resid_variances,
+    X1_Variance = X1_variances,
+    X2_Variance = X2_variances
+  )
 
-        # Extract relevant information
-        sum_sq <- anova_table$`Sum Sq`
+  names(sum_sqs_df)[3:4] <- covariates
 
-        # Store sum_sqs for each gene
-        resid_variances[i] <- sum_sq[3]
-        X2_variances[i] <- sum_sq[2]
-        X1_variances[i] <- sum_sq[1]
-
-        # Update the progress bar if verbose is TRUE
-        if (verbose) {
-            setTxtProgressBar(pb, i)
-        }
-    }
-
-    # Close the progress bar if verbose is TRUE
-    if (verbose) {
-        close(pb)
-    }
-
-    # Create a data frame with sum_sqs
-    sum_sqs_df <- data.frame(
-        Gene = gene_names,
-        Resid_Variance = resid_variances
-    )
-
-    colnames(sum_sqs_df)[2] <- covariates[1]
-    colnames(sum_sqs_df)[3] <- covariates[2]
-
-    return(sum_sqs_df)
+  return(sum_sqs_df)
 }

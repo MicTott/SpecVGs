@@ -8,7 +8,7 @@ calculate_gene_variances(
   gene_names,
   df,
   covariates = c("species", "celltype"),
-  verbose = FALSE
+  verbose = TRUE
 )
 }
 \arguments{
